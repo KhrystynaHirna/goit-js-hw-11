@@ -2,7 +2,7 @@ import './sass/main.scss';
 import './css/styles.css';
 import Notiflix from 'notiflix';
 import { Axios } from 'axios';
-import photoCards from './photo_cards.hbs';
+import photoCards from './photo_card.hbs';
 
 const input = document.querySelector('form input');
 const searchButton = document.querySelector('form button');
