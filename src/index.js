@@ -1,5 +1,7 @@
 import './sass/main.scss';
 import './css/styles.css';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
 import { Axios } from 'axios';
 import photoCards from './photo_card.hbs';
@@ -13,6 +15,8 @@ searchButton.addEventListener('click', onSearchButton);
 
 // const userSearch = onInputForm();
 let userSearch = '';
+let page = 1;
+let per_page = 40;
 
 const options = {
     key: '25789368-636c5d004c25f97cc91a0f5f4',
@@ -27,9 +31,9 @@ const options = {
 };
 
 const searchImages = async() => {
-    const response = await fetch(`${BASE_URL}&q=${userSearch}&image_type`);
-    const images = await response.json();
-    return images;
+    const response = await (fetch(`${BASE_URL}&q=${userSearch}&image_type`), options);
+    const totalHits = await response.json();
+    return totalHits;
 }
 searchImages().then(images => console.log(images));
 
