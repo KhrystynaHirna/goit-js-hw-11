@@ -2,6 +2,7 @@ import './sass/main.scss';
 import './css/styles.css';
 import Notiflix from 'notiflix';
 import { Axios } from 'axios';
+import photoCards from './photo_cards.hbs';
 
 const input = document.querySelector('form input');
 const searchButton = document.querySelector('form button');
@@ -16,13 +17,13 @@ let userSearch = '';
 const options = {
     key: '25789368-636c5d004c25f97cc91a0f5f4',
     body: JSON.stringify(),
-    q: evt.currentTarget.value,
+    q: currentTarget.value,
     image_type: photo,
     orientation: horizontal,
     safesearch: true,
-    headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-    }   
+    // headers: {
+    //     "Content-Type": "application/json; charset=UTF-8",
+    // }   
 };
 
 const searchImages = async() => {
