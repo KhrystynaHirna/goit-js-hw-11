@@ -7,7 +7,7 @@ import { Axios } from 'axios';
 import photoCards from './photo_card.hbs';
 import NewsApiService from './news-service';
 
-const searchButton = document.querySelector('form button');
+const searchButton = document.querySelector('.search-button');
 const loadMoreButton = document.querySelector('.load-more');
 const articlesGallery = document.querySelector('.gallery');
 const newsApiService = new NewsApiService();
@@ -17,13 +17,18 @@ loadMoreButton.addEventListener('click', onLoadMoreButton);
 
 function onSearchButton(evt) {
     evt.preventDefault();
+
     newsApiService.query = evt.currentTarget.elements.query.value;
-    newsApiService.fetchArticles().then(galleryArticlesMarkup);
+    newsApiService.fetchImages().then(galleryArticlesMarkup);
+    clearGalleryArticlesMarkup();
     newsApiService.resetPage();
 }
 function onLoadMoreButton() {
-    newsApiService.fetchArticles().then(galleryArticlesMarkup);
+    newsApiService.fetchImages().then(galleryArticlesMarkup);
 }
 function galleryArticlesMarkup(articles) {
     articlesGallery.insertAdjacentHTML('beforeend', photoCards(articles));
+}
+function clearGalleryArticlesMarkup() {
+    articlesGallery.innerHTML = '';
 }
