@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default class NewsApiService {
+export default class ImagesApiService {
     constructor() {
         this.BASE_URL = 'https://pixabay.com/api/';
         this.API_KEY = '?key=25789368-636c5d004c25f97cc91a0f5f4';

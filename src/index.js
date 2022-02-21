@@ -5,13 +5,13 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
 import { Axios } from 'axios';
 import photoCards from './photo_card.hbs';
-import NewsApiService from './news-service';
+import ImagesApiService from './images-service';
 
 const inputEl = document.querySelector('form input');
 const searchButton = document.querySelector('.search-button');
 const loadMoreButton = document.querySelector('.load-more');
 const imagesGallery = document.querySelector('.gallery');
-const newsApiService = new NewsApiService();
+const imagesApiService = new ImagesApiService();
 
 searchButton.addEventListener('submit', onSearchButton);
 loadMoreButton.addEventListener('click', onLoadMoreButton);
@@ -25,11 +25,11 @@ async function onSearchButton(evt) {
         return Notiflix.Notify.warning("Please enter something.");
     }
     clearGalleryImagesMarkup();
-    newsApiService.resetPage();
-    newsApiService.userSearch = input;
+    imagesApiService.resetPage();
+    imagesApiService.userSearch = input;
 
     try {
-        const response = await newsApiService.fetchImages();
+        const response = await imagesApiService.fetchImages();
         const dataImages = response.data.hits;
 
         if (dataImages.length === 0) {
@@ -45,7 +45,7 @@ async function onSearchButton(evt) {
 };
 
 function onLoadMoreButton() {
-    newsApiService.fetchImages().then(galleryImagesMarkup);
+    imagesApiService.fetchImages().then(galleryImagesMarkup);
 }
 function galleryImagesMarkup() {
     imagesGallery.insertAdjacentHTML('beforeend', photoCards());
