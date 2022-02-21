@@ -7,28 +7,49 @@ import { Axios } from 'axios';
 import photoCards from './photo_card.hbs';
 import NewsApiService from './news-service';
 
+const inputEl = document.querySelector('form input');
 const searchButton = document.querySelector('.search-button');
 const loadMoreButton = document.querySelector('.load-more');
-const articlesGallery = document.querySelector('.gallery');
+const imagesGallery = document.querySelector('.gallery');
 const newsApiService = new NewsApiService();
 
 searchButton.addEventListener('submit', onSearchButton);
 loadMoreButton.addEventListener('click', onLoadMoreButton);
 
-function onSearchButton(evt) {
+async function onSearchButton(evt) {
     evt.preventDefault();
+    onLoadMoreButton();
 
-    newsApiService.query = evt.currentTarget.elements.query.value;
-    newsApiService.fetchImages().then(galleryArticlesMarkup);
-    clearGalleryArticlesMarkup();
+    const input = inputEl.currentTarget.elements.value.trim();
+    if (input === '') {
+        return Notiflix.Notify.warning("Please enter something.");
+    }
+    clearGalleryImagesMarkup();
     newsApiService.resetPage();
-}
+    newsApiService.userSearch = input;
+
+    try {
+        const response = await newsApiService.fetchImages();
+        const dataImages = response.data.hits;
+
+        if (dataImages.length === 0) {
+            return Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
+        }
+        Notiflix.Notify.success(`Hooray! We found ${response.data.totalHits} images.`);
+        onLoadMoreButton();
+        galleryImagesMarkup(dataImages);
+    }
+    catch (error) {
+        errorCatch(error);
+    }
+};
+
 function onLoadMoreButton() {
-    newsApiService.fetchImages().then(galleryArticlesMarkup);
+    newsApiService.fetchImages().then(galleryImagesMarkup);
 }
-function galleryArticlesMarkup(articles) {
-    articlesGallery.insertAdjacentHTML('beforeend', photoCards(articles));
+function galleryImagesMarkup() {
+    imagesGallery.insertAdjacentHTML('beforeend', photoCards());
 }
-function clearGalleryArticlesMarkup() {
-    articlesGallery.innerHTML = '';
+function clearGalleryImagesMarkup() {
+    imagesGallery.innerHTML = '';
 }
