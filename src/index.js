@@ -3,47 +3,53 @@ import './css/styles.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
-import { Axios } from 'axios';
 import photoCards from './photo_card.hbs';
 import ImagesApiService from './images-service';
 
-const inputEl = document.querySelector('form input');
-const searchButton = document.querySelector('.search-button');
-const loadMoreButton = document.querySelector('.load-more');
+const searchEl = document.querySelector('.search-form');
 const imagesGallery = document.querySelector('.gallery');
+const loadMoreButton = document.querySelector('.load-more');
+
 const imagesApiService = new ImagesApiService();
 
-searchButton.addEventListener('submit', onSearchButton);
+searchEl.addEventListener('submit', onFormSubmit);
+// searchEl.addEventListener('input', onFormInput);
 loadMoreButton.addEventListener('click', onLoadMoreButton);
+loadMoreButton.hidden = true;
 
-async function onSearchButton(evt) {
-    evt.preventDefault();
-    onLoadMoreButton();
+async function onFormSubmit(e) {
+    e.preventDefault();
+    loadMoreButton.hidden = true;
 
-    const input = inputEl.currentTarget.elements.value.trim();
-    if (input === '') {
+    imagesApiService.query = e.currentTarget.elements.query.value.trim();
+    // imagesApiService.query = input;
+
+    if (imagesApiService.query === '') {
         return Notiflix.Notify.warning("Please enter something.");
     }
     clearGalleryImagesMarkup();
     imagesApiService.resetPage();
-    imagesApiService.userSearch = input;
 
     try {
-        const response = await imagesApiService.fetchImages();
-        const dataImages = response.data.hits;
+        const responseImages = await imagesApiService.fetchImages().then(galleryImagesMarkup);
+        // const dataImages = responseImages.then(response);
 
-        if (dataImages.length === 0) {
+        if (responseImages.length === 0) {
             return Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
+        } else {
+            Notiflix.Notify.success(`Hooray! We found ${responseImages} images.`);
         }
-        Notiflix.Notify.success(`Hooray! We found ${response.data.totalHits} images.`);
         onLoadMoreButton();
-        galleryImagesMarkup(dataImages);
+        galleryImagesMarkup(responseImages);
     }
     catch (error) {
-        errorCatch(error);
+        console.log(error);
     }
+   onLoadMoreButton();
 };
-
+// function onFormInput() {
+//    const input = evt.target.value.trim();
+// }
 function onLoadMoreButton() {
     imagesApiService.fetchImages().then(galleryImagesMarkup);
 }
