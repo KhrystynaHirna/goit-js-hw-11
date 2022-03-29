@@ -34,13 +34,13 @@ async function onFormSubmit(e) {
         const responseImages = await imagesApiService.fetchImages().then(galleryImagesMarkup);
         // const dataImages = responseImages.then(response);
 
-        if (responseImages.length === 0) {
+        if (responseImages === 0) {
             return Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
         } else {
             Notiflix.Notify.success(`Hooray! We found ${responseImages} images.`);
         }
         onLoadMoreButton();
-        galleryImagesMarkup(response);
+        galleryImagesMarkup();
     }
     catch (error) {
         console.log(error);
