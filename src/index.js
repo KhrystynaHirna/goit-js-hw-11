@@ -13,7 +13,6 @@ const loadMoreButton = document.querySelector('.load-more');
 const imagesApiService = new ImagesApiService();
 
 searchEl.addEventListener('submit', onFormSubmit);
-// searchEl.addEventListener('input', onFormInput);
 loadMoreButton.addEventListener('click', onLoadMoreButton);
 loadMoreButton.hidden = true;
 
@@ -21,8 +20,8 @@ async function onFormSubmit(e) {
     e.preventDefault();
     loadMoreButton.hidden = true;
 
-    imagesApiService.query = e.currentTarget.searchQuery.value.trim();
-    // imagesApiService.query = input;
+    imagesApiService.query = e.target.searchQuery.value.trim();
+    
 
     if (imagesApiService.query === '') {
         return Notiflix.Notify.warning("Please enter something.");
@@ -32,7 +31,6 @@ async function onFormSubmit(e) {
 
     try {
         const responseImages = await imagesApiService.fetchImages().then(galleryImagesMarkup);
-        // const dataImages = responseImages.then(response);
 
         if (responseImages === 0) {
             return Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
@@ -46,16 +44,13 @@ async function onFormSubmit(e) {
     catch (error) {
         console.log(error);
     }
-   onLoadMoreButton();
 };
-// function onFormInput() {
-//    const input = evt.target.value.trim();
-// }
+
 function onLoadMoreButton() {
     imagesApiService.fetchImages().then(galleryImagesMarkup);
 }
-function galleryImagesMarkup(response) {
-    imagesGallery.insertAdjacentHTML('beforeend', photoCards(response));
+function galleryImagesMarkup(responseImages) {
+    imagesGallery.insertAdjacentHTML('beforeend', photoCards(responseImages));
 }
 function clearGalleryImagesMarkup() {
     imagesGallery.innerHTML = '';
