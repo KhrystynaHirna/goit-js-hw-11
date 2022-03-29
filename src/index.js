@@ -21,7 +21,7 @@ async function onFormSubmit(e) {
     e.preventDefault();
     loadMoreButton.hidden = true;
 
-    imagesApiService.query = e.currentTarget.elements.query.value.trim();
+    imagesApiService.query = e.currentTarget.searchQuery.value.trim();
     // imagesApiService.query = input;
 
     if (imagesApiService.query === '') {
