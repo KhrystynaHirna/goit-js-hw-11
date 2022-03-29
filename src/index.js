@@ -39,6 +39,7 @@ async function onFormSubmit(e) {
         } else {
             Notiflix.Notify.success(`Hooray! We found ${responseImages} images.`);
         }
+        loadMoreButton.hidden = false;
         onLoadMoreButton();
         galleryImagesMarkup();
     }
