@@ -40,7 +40,7 @@ async function onFormSubmit(e) {
             Notiflix.Notify.success(`Hooray! We found ${responseImages} images.`);
         }
         onLoadMoreButton();
-        galleryImagesMarkup(responseImages);
+        galleryImagesMarkup(response);
     }
     catch (error) {
         console.log(error);
@@ -53,8 +53,8 @@ async function onFormSubmit(e) {
 function onLoadMoreButton() {
     imagesApiService.fetchImages().then(galleryImagesMarkup);
 }
-function galleryImagesMarkup() {
-    imagesGallery.insertAdjacentHTML('beforeend', photoCards());
+function galleryImagesMarkup(response) {
+    imagesGallery.insertAdjacentHTML('beforeend', photoCards(response));
 }
 function clearGalleryImagesMarkup() {
     imagesGallery.innerHTML = '';
