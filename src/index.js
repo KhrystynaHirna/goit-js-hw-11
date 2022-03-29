@@ -35,7 +35,7 @@ async function onFormSubmit(e) {
         if (responseImages === 0) {
             return Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
         } else {
-            Notiflix.Notify.success(`Hooray! We found ${responseImages} images.`);
+            Notiflix.Notify.success(`Hooray! We found ${imagesApiService.query} images.`);
         }
         loadMoreButton.hidden = false;
         onLoadMoreButton();
