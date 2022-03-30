@@ -29,13 +29,14 @@ async function onFormSubmit(e) {
 
     try {
         const responseImages = await imagesApiService.fetchImages().then(galleryImagesMarkup);
+        const input = responseImages;
 
-        if (responseImages === 0) {
-            return Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
+        if (input === 0) {
+           return Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
         } else {
             Notiflix.Notify.success(`Hooray! We found ${imagesApiService.query} images.`);
         }
-        
+
         loadMoreButton.hidden = false;
         galleryImagesMarkup();
         //  onLoadMoreButton();
@@ -43,6 +44,8 @@ async function onFormSubmit(e) {
     catch (error) {
         console.log(error);
     }
+    let lightbox = new SimpleLightbox('.photo-card a', { captionsData: 'alt', captionDelay: 250 });
+    lightbox.refresh();
 };
 
 function onLoadMoreButton() {
@@ -53,8 +56,4 @@ function galleryImagesMarkup(responseImages) {
 }
 function clearGalleryImagesMarkup() {
     imagesGallery.innerHTML = '';
-}
-// const lightbox = new SimpleLightbox('.gallery a', {
-//     captionsData: 'alt',
-//     captionDelay: 250,
-// });
+};
