@@ -19,16 +19,8 @@ loadMoreButton.hidden = true;
 async function onFormSubmit(e) {
     e.preventDefault();
     loadMoreButton.hidden = true;
-
     imagesApiService.query = e.target.searchQuery.value.trim();
     
-
-    if (imagesApiService.query === '') {
-        return Notiflix.Notify.warning("Please enter something.");
-    }
-    clearGalleryImagesMarkup();
-    imagesApiService.resetPage();
-
     try {
         const responseImages = await imagesApiService.fetchImages().then(galleryImagesMarkup);
 
@@ -39,11 +31,17 @@ async function onFormSubmit(e) {
         }
         loadMoreButton.hidden = false;
         onLoadMoreButton();
-        galleryImagesMarkup();
+        // galleryImagesMarkup();
     }
     catch (error) {
         console.log(error);
     }
+
+ if (imagesApiService.query === '') {
+        return Notiflix.Notify.warning("Please enter something.");
+    }
+    clearGalleryImagesMarkup();
+    imagesApiService.resetPage();
 };
 
 function onLoadMoreButton() {
