@@ -19,8 +19,14 @@ loadMoreButton.hidden = true;
 async function onFormSubmit(e) {
     e.preventDefault();
     loadMoreButton.hidden = true;
-    imagesApiService.query = e.target.searchQuery.value.trim();
-    
+    imagesApiService.query = e.currentTarget.elements.searchQuery.value.trim();
+
+     if (imagesApiService.query === '') {
+        return Notiflix.Notify.warning("Please enter something.");
+    }
+    clearGalleryImagesMarkup();
+    imagesApiService.resetPage();
+
     try {
         const responseImages = await imagesApiService.fetchImages().then(galleryImagesMarkup);
 
@@ -29,19 +35,14 @@ async function onFormSubmit(e) {
         } else {
             Notiflix.Notify.success(`Hooray! We found ${imagesApiService.query} images.`);
         }
+        
         loadMoreButton.hidden = false;
-        onLoadMoreButton();
-        // galleryImagesMarkup();
+        galleryImagesMarkup();
+        //  onLoadMoreButton();
     }
     catch (error) {
         console.log(error);
     }
-
- if (imagesApiService.query === '') {
-        return Notiflix.Notify.warning("Please enter something.");
-    }
-    clearGalleryImagesMarkup();
-    imagesApiService.resetPage();
 };
 
 function onLoadMoreButton() {
@@ -53,3 +54,7 @@ function galleryImagesMarkup(responseImages) {
 function clearGalleryImagesMarkup() {
     imagesGallery.innerHTML = '';
 }
+// const lightbox = new SimpleLightbox('.gallery a', {
+//     captionsData: 'alt',
+//     captionDelay: 250,
+// });
