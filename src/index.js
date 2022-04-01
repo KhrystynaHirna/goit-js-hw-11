@@ -29,15 +29,20 @@ function onFormSubmit(e) {
     clearGalleryImagesMarkup();
     imagesApiService.resetPage();
 
+    // te szczo korystuwaczi otrymajut
     imagesApiService.fetchImages().then(pictures => {
         if (pictures.data.totalHits !== 0 && pictures.data.hits.length !== 0) {
-            Notiflix.Notify.success(`Hooray! We found ${imagesApiService.query} images.`,
-            );
+            Notiflix.Notify.success(`Hooray! We found ${pictures.data.totalHits} images.`);
             loadMoreButton.hidden = false;
         } else {
             Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+            return;
         }
-  
+            if (pictures.data.totalHits < 40) {
+                Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");
+                loadMoreButton.hidden = true;
+            }
+        
         galleryImagesMarkup(pictures);
         let lightbox = new SimpleLightbox('.gallery a', {
                 captionsData: 'alt',
@@ -45,7 +50,6 @@ function onFormSubmit(e) {
             });
     });
 }
-
 function onLoadMoreButton() {
     imagesApiService.fetchImages().then(galleryImagesMarkup);
 }
