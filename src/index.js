@@ -47,7 +47,8 @@ function onFormSubmit(e) {
         let lightbox = new SimpleLightbox('.gallery a', {
                 captionsData: 'alt',
                 captionDelay: 250
-            });
+        });
+        lightbox.refresh();
     });
 }
 function onLoadMoreButton() {
