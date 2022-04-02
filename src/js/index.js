@@ -27,7 +27,7 @@ if (queryInput !== '') {
         getImages(queryInput)
         .then(createGallery)
         .catch(noResultsMessage);
-    }
+    } else Notiflix.Notify.warning("Please enter something.")
     page = 1;
 }
 function onInput(e) {
