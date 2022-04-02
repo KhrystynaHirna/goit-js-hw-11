@@ -1,8 +1,8 @@
 import '../sass/main.scss';
 import '../css/styles.css';
+import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import Notiflix from 'notiflix';
 import photoCards from '../photo_card.hbs';
 import { getImages } from './images-service';
 
@@ -50,6 +50,17 @@ function createGallery(images) {
         resultsMessage(images);
         }
 }
+function resultsMessage(images) {
+    Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`);
+}
+function noResultsMessage() {
+    Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
+}
+function endOfListMessage() {
+    timerId = setTimeout(() => {
+        Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.")
+    }, 800)
+}
 function onLoadMoreButton() {
     page += 1;
     getImages(queryInput, page)
@@ -67,17 +78,6 @@ function smoothScroll() {
   top: cardHeight * 2,
   behavior: 'smooth',
   });  
-}
-function resultsMessage(images) {
-    Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`);
-}
-function noResultsMessage() {
-    Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
-}
-function endOfListMessage() {
-    timerId = setTimeout(() => {
-        Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.")
-    }, 800)
 }
 function galleryImagesMarkup(images) {
     images.hits.map(image => {
