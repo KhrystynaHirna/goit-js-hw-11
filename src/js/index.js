@@ -83,7 +83,9 @@ function galleryImagesMarkup(images) {
     images.hits.map(image => {
     imagesGallery.insertAdjacentHTML('beforeend', photoCards(image));
     })
-    let lightbox = new SimpleLightbox('.photo-card a');
+    let lightbox = new SimpleLightbox('.gallery a', {
+        captionsData: 'alt',
+        captionDelay: 250 });
     lightbox.on('show.simplelightbox', function () { });
     lightbox.refresh();
 }
